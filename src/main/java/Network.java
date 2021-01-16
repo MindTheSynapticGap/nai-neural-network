@@ -2,31 +2,35 @@ import org.deeplearning4j.nn.multilayer.MultiLayerNetwork;
 import org.deeplearning4j.optimize.listeners.ScoreIterationListener;
 import org.nd4j.evaluation.classification.Evaluation;
 import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.dataset.DataSet;
 
 public class Network {
+    private static final DataReader dataReader = new DataReader();
+    private static final MultiLayerNetwork network = new MultiLayerNetwork(
+            new NetworkConfiguration().getMultiLayerConfiguration());
 
     public void start() {
-
-        final MultiLayerNetwork network = new MultiLayerNetwork(new NetworkConfiguration().getMultiLayerConfiguration());
         network.init();
 
-        final int eachIterations = 50;
-        network.addListeners(new ScoreIterationListener(eachIterations));
+        performLearning();
 
-        DataReader dataReader = new DataReader();
-        DataSet trainingData = dataReader.getTrainingData();
-        DataSet testData = dataReader.getTestData();
+        System.out.print(evaulateTestData().stats());
+    }
 
-        for(int i = 0; i < NetworkProperties.ITERATIONS.property; i++) {
-            network.fit(trainingData);
+    private void performLearning() {
+        final int eachIteration = 50;
+        network.addListeners(new ScoreIterationListener(eachIteration));
+
+        for (int i = 0; i < NetworkProperties.ITERATIONS.property; i++) {
+            network.fit(dataReader.getTrainingData());
         }
+    }
 
-        INDArray output = network.output(testData.getFeatures());
+    private Evaluation evaulateTestData() {
+        INDArray output = network.output(dataReader.getTestData().getFeatures());
         Evaluation eval = new Evaluation(NetworkProperties.OUTPUTS.property);
-        eval.eval(testData.getLabels(), output);
+        eval.eval(dataReader.getTestData().getLabels(), output);
 
-        System.out.print(eval.stats());
+        return eval;
     }
 
 }
