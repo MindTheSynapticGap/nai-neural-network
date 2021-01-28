@@ -1,7 +1,7 @@
 public enum NetworkProperties {
     INPUTS(30),
     HIDDEN_NODES(30),
-    OUTPUTS(3),
+    OUTPUTS(10),
     BATCH_SIZE(10),
     ITERATIONS(1000);
 

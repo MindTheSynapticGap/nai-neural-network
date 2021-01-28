@@ -24,6 +24,7 @@ public class DataReader {
     }
 
     public DataSet getTrainingData() {
+        trainingData.shuffle(42);
         return trainingData;
     }
 
@@ -37,19 +38,21 @@ public class DataReader {
         try (RecordReader recordReader = new CSVRecordReader(0, ',')) {
 
             recordReader.initialize(new FileSplit(new ClassPathResource("neural_network_data.csv").getFile()));
-
-            DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader, NetworkProperties.BATCH_SIZE.property, 30, NetworkProperties.OUTPUTS.property);
+            DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader,
+                    NetworkProperties.BATCH_SIZE.property, 30, NetworkProperties.OUTPUTS.property);
             data = iterator.next();
-            data.shuffle(42);
+
 
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
-        if(data != null) {
+        if (data != null) {
             return Optional.of(data);
         } else {
             return Optional.empty();
         }
     }
+
+
 }
