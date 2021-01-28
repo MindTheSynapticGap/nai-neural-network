@@ -20,16 +20,16 @@ public class Network {
     }
 
     private void performLearning() {
-        CollectScoresIterationListener sc= new CollectScoresIterationListener();
+        CollectScoresIterationListener collectScoresItertionListener = new CollectScoresIterationListener();
 
-        network.addListeners(sc);
+        network.addListeners(collectScoresItertionListener);
 
         for (int i = 0; i < NetworkProperties.ITERATIONS.property; i++) {
             network.fit(dataReader.getTrainingData());
         }
 
         try {
-            sc.exportScores(new File("errorFunctionValues.txt"),",");
+            collectScoresItertionListener.exportScores(new File("errorFunctionValues.txt"), ",");
         } catch (IOException e) {
             e.printStackTrace();
         }
