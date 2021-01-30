@@ -1,5 +1,4 @@
 import org.datavec.api.records.reader.RecordReader;
-import org.datavec.api.records.reader.impl.csv.CSVRecordReader;
 import org.datavec.api.split.FileSplit;
 import org.deeplearning4j.datasets.datavec.RecordReaderDataSetIterator;
 import org.nd4j.common.io.ClassPathResource;
@@ -18,7 +17,7 @@ public class DataReader {
     public DataReader() {
         DataSet allData = populateAllData().orElseThrow(() -> new RuntimeException("Test data could not be populated"));
 
-        SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(0.70);
+        SplitTestAndTrain testAndTrain = allData.splitTestAndTrain(0.67);
         trainingData = testAndTrain.getTrain();
         testData = testAndTrain.getTest();
     }
