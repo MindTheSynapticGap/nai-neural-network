@@ -35,7 +35,7 @@ public class DataReader {
     private Optional<DataSet> populateAllData() {
         DataSet data = null;
 
-        try (RecordReader recordReader = new CSVRecordReader(0, ',')) {
+        try (RecordReader recordReader = new CombiningCSVRecordReader(7,0, ',')) {
 
             recordReader.initialize(new FileSplit(new ClassPathResource("neural_network_data.csv").getFile()));
             DataSetIterator iterator = new RecordReaderDataSetIterator(recordReader,
