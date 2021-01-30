@@ -25,11 +25,13 @@ public class NetworkConfiguration {
                         .nIn(NetworkProperties.INPUTS.property)
                         .nOut(NetworkProperties.HIDDEN_NODES.property)
                         .weightInit(WeightInit.XAVIER)
+                        .hasBias(true)
                         .build())
                 .layer(1, new OutputLayer.Builder(LossFunctions.LossFunction.NEGATIVELOGLIKELIHOOD)
                         .nIn(NetworkProperties.HIDDEN_NODES.property)
                         .nOut(NetworkProperties.OUTPUTS.property)
                         .weightInit(WeightInit.XAVIER)
+                        .hasBias(true)
                         .build())
                 .backpropType(BackpropType.Standard)
                 .build();
